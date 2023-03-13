@@ -1,3 +1,3 @@
-# javascript-study
+# JavaScript Study
 
-자바스크립트 이론적으로 깊게 공부하며 메모한 글들
+## JavaScript 에 대해 이론적으로 공부하며 정리한 프로젝트
