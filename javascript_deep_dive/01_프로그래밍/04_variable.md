@@ -11,4 +11,4 @@
   연산과 기억을 수행하는 부품이 나뉘어져있다. 컴퓨터는 CPU를 사용해 연산하고, 메모리를 사용해 데이터를 기억한다.</strong>
 
 - 메모리는 데이터를 저장할 수 있는 메모리 셀의 집합체다. 메모리 셀 하나의 크기는 1바이트(8비트)이며, 컴퓨터는 메모리 셀의 크기, 즉 1바이트 단위로 데이터를 저장하거나 읽어들인다.
-  <center><img src="/01_프로그래밍_img/메모리(메모리셀).jpg" width="400" height="250"/></center>
+  <center><img src="https://user-images.githubusercontent.com/82255957/226218794-15efec39-533f-48d5-89be-64f1794cc052.jpg" width="400" height="250"/></center>
