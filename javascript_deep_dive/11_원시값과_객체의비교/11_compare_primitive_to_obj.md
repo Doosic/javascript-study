@@ -154,3 +154,16 @@ console.log(person); // {name: 'Kim', address: 'Seoul'}
 - 위의 이미지와 같이 person과 copy가 저장된 메모리는 다르지만 동일한 참조 값을 갖는다. 다시 말해 원본과 사본 둘다
   동일한 객체를 가리킨다. 이것은 **두 개의 식별자가 하나의 객체를 공유한다는것**을 의미한다.
 - 따라서 원본 또는 사본 중 어느 한쪽에서 객체를 변경하면 서로 영향을 주고받는다.
+
+```
+var person1 = {
+  name: 'Lee'
+};
+
+var person1 = {
+  name: 'Lee'
+};
+
+console.log(person1 === person2); // false 메모리의 주소값이 다르다.
+console.log(person1.name === person2.name); // true 원시값이 같다.
+```
