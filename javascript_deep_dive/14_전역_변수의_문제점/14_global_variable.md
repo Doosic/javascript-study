@@ -139,6 +139,13 @@ console.log(Counter.increase); // 1
   public member다. 외부로 노출하고 싶지 않은 변수나 함수는 반환하는 객체에 추가하지 않으면 외부에서 접근할 수 없는
   private member가 된다.
 
+### ES6 모듈
 
-
+- ES6 모듈을 사용하면 더는 전역 변수를 사용할 수 없다. ES6 모듈은 파일 자체의 독자적인 모듈
+  스코프를 제공한다. 따라서 모듈 내에서 var 키워드로 선언한 변수는 더는 전역 변수가 아니며 window 객체의
+  프로퍼티도 아니다. script 태그에 type="module" 어트리뷰트를 추가하면 로드된 자바스크립트 파일은 모듈로써 동작한다.
+- 모듈 파일의 확장자는 mjs를 권장한다.
+```
+<script type="module" src="app.mjs"></script>
+```
 
