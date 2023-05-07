@@ -134,9 +134,85 @@ function Circle(radius) {
 - 1.암묵적으로 빈 객체 생성후 this에 바인딩
 - 2.인수값을 이용해 this에 바인딩된 인스턴스 초기화
 - 3.명시된 반환이 없을시 암묵적으로 this 반환
+<hr>
 
 ## 내부 메서드 [[Call]]과 [[Construct]]
 
 - construct는 non-constructor과 constructor로 나뉜다.
 - non-constructor: 일반 함수로서만 호출할 수 있는 객체
 - constructor: 일반 함수 또는 생성자 함수로써 호출할 수 있는 객체
+
+### constructor와 non-constructor의 구분
+
+- 자바스크립트 엔진은 함수 정의를 평가하여 함수 객체를 생성할 때 함수 정의 방식에 따라
+  constructor와 non-constructor를 구분한다.
+  - constructor: 함수 선언문, 함수 표현식, 클래스
+  - non-constructor: 메서드, 화살표 함수
+```
+// 일반 함수 정의: 함수 선언문, 함수 표현식
+function foo() {}
+const bar = function() {};
+
+// 화살표 함수 정의
+const arrow = () => {};
+
+// 메서드 정의: ES6의 메서드 축약 표현만 메서드로 인정한다.
+const obj = {
+  x() {}
+};
+
+new obj.x(); // TypeError: obj.x is not a constructor
+```
+- 함수 선언문과 함수 표현식으로 정의된 함수만이 constructor이고 ES6의 화살표 함수의 메서드 축약 표현으로
+  정의된 함수는 non-constructor이다.
+
+### new 연산자
+
+- 일반 함수와 생성자 함수에 특별한 형식적 차이는 없다. new 연산자와 함께 함수를 호출하면 해당 함수는 생성자
+  함수로 동작한다. 단 new 연산자와 함께 호출하는 함수는 non-constructor가 아닌 constructor 이어야 한다.
+```
+function Circle(radius){
+  this.radius = radius;
+  this.getDiameter = function () {
+    return 2 * this.radius;
+  };
+}
+
+// new 연산자 없이 생성자 함수 호출하면 일반 함수로서 호출된다.
+const circle = Circle(5);
+
+// 일반 함수 내부의 this는 전역 객체 window를 가리킨다.
+console.log(radius); // 5
+console.log(getDiameter()); // 10
+
+circle.getDiameter(); // TypeError: Cannot read property 'getDiameter' of undefined
+```
+
+- Circle 함수를 new 연산자와 함께 생성자 함수로써 호출하면 함수 내부의 this는 Circle 생성자 함수가 생성할 인스턴스를
+  가리킨다. 하지만 circle 함수를 일반적인 함수로서 호출하면 함수 내부의 this는 전역 객체 window를 가리킨다.
+
+### new.target
+
+- new 연산자와 함께 생성자 함수로서 호출되면 함수 내부의 new.target은 함수 자신을 가리킨다.
+  new 연산자 없이 일반 함수로서 호출된 함수 내부의 new.target은 undefined다.
+- new 연산자 없이 호출했을 경우 생성자 함수를 재귀 호출을 통해 생성자 함수로서 호출할 수 있다.
+
+```
+// 생성자 함수
+function Circle(radius) {
+  // 이 함수가 new 연산자와 함께 호출되지 않았다면 new.target은 undefined다. falsy
+  if (!new.target) {
+    // new 연산자와 함께 생성자 함수를 재귀 호출하여 생성된 인스턴스를 반환한다.
+    return new Circle(radius);
+  }
+  
+  this.radius = radius;
+  this.getDiameter = function () {
+    return 2 * this.radius;
+  };
+}
+```
+
+- 재귀 호출을 통해 new 연산자 없이 생성자 함수를 호출해도 new.target을 통해 생성자 함수로써 호출가능
+- new.target 은 ES6에서 도입된 최신 문법으로 IE에서는 지원하지 않는다. 이때는 스코프 세이프 생성자 패턴을 사용하자.
+- 별거없다. new.target을 if(!(this instanceof Circle))로 변경할뿐이다.
