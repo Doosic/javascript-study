@@ -126,3 +126,72 @@ console.log(circle1.getArea === circle2.getArea); // true
 |:--|:--|:--|:--|:---------------------------------------------|
 |__ proto __ 접근자 프로퍼티|모든 객체|프로토타입의 참조|모든 객체| 객체가 자신의 프로토타입에 접근 또는 교체하기 위해 사용              |
 |prototype 프로퍼티|constructor|프로토타입의 참조|생성자 함수| 생성자 함수가 자신이 생성할 객체(인스턴스)의 프로토타입을 할당하기 위해 사용  |
+
+<hr>
+
+## 리터럴 표기법에 의해 생성된 객체의 생성자 함수와 프로토타입
+
+- 생성자 함수에 의해 생성된 인스턴스는 프로토타입의 constructor 프로퍼티에 의해 생성자 함수와 연결된다.
+  이때 constructor 프로퍼티가 가리키는 생성자 함수는 인스턴스를 생성한 생성자 함수다.
+
+```
+// obj 객체를 생성한 생성자 함수는 Object다.
+const obj = new Object();
+console.log(obj.constructor === Object); // true
+
+// add 함수 객체를 생성한 생성자 함수는 Function이다.
+const add = new Function('a', 'b', 'return a + b');
+console.log(add.constructor === Function); // true
+
+// 생성자 함수
+function Person(name) {
+  this.name = name;
+}
+
+// me 객체를 생성한 생성자 함수는 Person이다.
+const me = new Person('Lee');
+console.log(me.constructor === Person); // true
+```
+
+- 생성자 함수가 아닌 리터럴 표기법에 의한 객체 생성 방식과 같이 명시적으로 new 연산자와 함께 생성자
+  함수를 호출하여 인스턴스를 생성하지 않는 객체 생성 방식도 있다.
+```
+// 객체 리터럴
+const obj = {};
+
+// 함수 리터럴
+const add = function (a, b) { return a + b; };
+
+// 배열 리터럴
+const arr = [1, 2, 3];
+
+// 정규 표현식 리터럴
+const regexp = /is/ig;
+```
+
+- 리터럴 표기법에 의해 생성된 객체도 프로토 타입이 존재하지만, 생성된 객체의 프로토타입의 constructor 프로퍼티가 가리키는
+  생성자 함수가 반드시 객체를 생성한 생성자 함수라고 단정할 수 없다.
+
+```
+// obj 객체는 Object 생성자 함수로 생성한 객체가 아니라 객체 리터럴로 생성했다.
+const obj = {};
+
+// 하지만 obj객체의 생성자 함수는 Object 생성자 함수다.
+console.log(obj.constructor === Object); // true
+```
+- 객체 리터럴로 생성한 obj객체가 Object 생성자 함수와 constructor로 연결되어있다. 이유는 생성자 함수에 인수를
+  전달하지 않거나 undefined 또는 null을 인수로 전달하면서 호출하면 내부적으로는 추상 연산 ordinaryObjectCreate를 호출하여
+  Object.prototype을 프로토타입으로 갖는 빈 객체를 생성한다.
+
+- 리터럴 표기법에 의해 생성된 객체도 상속을 위해 프로토타입이 필요하다. 따라서 리터럴 표기법에 의해
+  생성된 객체도 가상적인 생성자 함수를 갖는다. 프로토타입은 생성자 함수와 더불어 생성되며 prototype, constructor
+  프로퍼티에 의해 연결되어 있기 때문이다. 다시 말해, 프로토타입과 생성자 함수는 단독으로 존재할 수 없고 언제나 쌍으로 존재한다.
+- 객체 리터럴 방식과 생성자 함수로 생성한 방식은 생성과정의 차이와 스코프, 클로저 등의 차이가 있지만 결국 함수로써 동일한 특성을 갖는다.
+
+| 리터럴 표기법    | 생성자 함수   | 프로토타입              |
+|:-----------|:---------|:-------------------|
+| 객체 리터럴     | Object   | Object.prototype   |
+| 함수 리터럴     | Function | Function.prototype |
+| 배열 리터럴     | Array    | Array.prototype    |
+| 정규 표현식 리터럴 | RegExp   | RegExp.prototype   |
+
