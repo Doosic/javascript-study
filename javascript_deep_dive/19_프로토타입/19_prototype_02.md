@@ -6,3 +6,28 @@
   구분할 수 있다.
 
 ### 사용자 정의 생성자 함수와 프로토타입 생성 시점
+
+- 생성자 함수인 constructor은 함수 정의가 평가되어 함수 객체를 생성하는 시점에 프로토타입도 더불어
+  생성된다.
+
+```
+// 함수 정의(constructor)가 평가되어 함수 객체를 생성하는 시점에 프로토타입도 더불어 생성된다.
+console.log(Person.prototype); // {constructor: f}
+
+// 생성자 함수
+function Person(name) {
+  this.name = name;
+}
+
+// non-constructor인 애로우펑션은 프로토타입이 생성되지 않는다.
+const Person = name => {
+  this.name = name;
+};
+
+console.log(Person.prototype); // undefined
+```
+
+- 생성된 프로토타입은 오직 constructor 프로퍼티만을 갖는 객체다. 프로토타입도 객체이고 모든 객체는
+  프로토타입을 가지므로 프로토타입도 자신의 프로토타입을 갖는다. 생성된 프로토타입의 프로토타입은 Object.prototype이다.
+- 이처럼 빌트인 생성자 함수가 아닌 사용자 정의 생성자 함수는 자신이 평가되어 함수 객체로 생성되는 시점에 프로토타입도 더불어 생성되며,
+  생성된 프로토타입의 프로토타입은 언제나 Object.prototype이다.
